@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ICLWorld: Benchmarking In-Context Learning of Agents from Digital to Physical Worlds</title>
+  <meta name="description" content="ICLWorld is an online benchmark of 160 tasks that evaluates whether agents learn customized rules from context, in computer use and robot use.">
+  <meta property="og:title" content="ICLWorld: Benchmarking In-Context Learning of Agents from Digital to Physical Worlds">
+  <meta property="og:description" content="160 tasks across computer use and robot use, three rule versions per task, three generalization levels.">
+  <meta property="og:image" content="https://iclworld.github.io/media/figures/overview.webp">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+  <header class="hero" id="top">
+    <div class="conveyor" aria-hidden="true">
+      <div class="conveyor__tilt">
+        <div class="belt belt--1"><div class="belt__track" data-row="1"></div></div>
+        <div class="belt belt--2"><div class="belt__track" data-row="2"></div></div>
+        <div class="belt belt--3"><div class="belt__track" data-row="3"></div></div>
+        <div class="belt belt--4"><div class="belt__track" data-row="4"></div></div>
+      </div>
+    </div>
+    <div class="hero__shade" aria-hidden="true"></div>
+
+    <nav class="hnav" id="hnav" aria-label="Sections">
+      <a class="hnav__brand" href="#top"><img src="assets/favicon.svg" alt="" width="26" height="26">ICLWorld</a>
+      <div class="hnav__links">
+        <a href="#overview">Overview</a>
+        <a href="#design">Design</a>
+        <a href="#examples">Examples</a>
+        <a href="#leaderboard">Leaderboard</a>
+        <a href="#findings">Findings</a>
+        <a href="#bibtex">Citation</a>
+      </div>
+    </nav>
+
+    <div class="hero__body">
+      <h1 class="hero__title"><img src="assets/brand/iclworld-wordmark.png" alt="ICLWorld" width="1200" height="237"></h1>
+      <p class="hero__sub">Benchmarking In-Context Learning of Agents<br>from <span class="dig">Digital</span> to <span class="phy">Physical</span> Worlds</p>
+      <p class="hero__authors"><span class="author">Qingle Liu</span>, <span class="author">Jieming Li</span>, <span class="author">Pei-lin Li</span>, <span class="author">Shenghan Zheng</span>, <span class="author">Ruize Yang</span>, <span class="author">Sunqi Fan</span>, <span class="author">Deyao Hong</span>, <span class="author">Huan-ang Gao</span>, <span class="author">Meng-Hao Guo</span>, <span class="author">Shuojin Yang<sup>†</sup></span></p>
+      <p class="hero__affil">Tsinghua University <span class="hero__note">† Corresponding author</span></p>
+      <div class="hero__cta">
+        <a class="btn btn--white" aria-disabled="true" title="Coming soon">arXiv · coming soon</a>
+        <a class="btn btn--line" href="https://github.com/ICLWorld/ICLWorld" target="_blank" rel="noopener">Code ↗</a>
+        <a class="btn btn--line" href="https://huggingface.co/datasets/Aoraku/ICLWorld" target="_blank" rel="noopener">Dataset ↗</a>
+        <a class="btn btn--line" href="#leaderboard">Leaderboard ↓</a>
+      </div>
+    </div>
+
+    <div class="hero__foot"></div>
+  </header>
+
+  <section class="section" id="overview">
+    <div class="container">
+      <figure class="figure">
+        <img src="media/figures/overview.webp" alt="Overview of ICLWorld." width="2400" height="1001">
+      </figure>
+      <div class="readfig">
+        <div><b>Same task, three rules</b><p>Every task has three rule versions that demand different behavior for the same goal. The rule is shown as a video, stated as text, or withheld.</p></div>
+        <div><b>Two worlds, one harness</b><p>The same agent operates web and desktop apps and a dual-arm robot, all through UIverse.</p></div>
+        <div><b>Evaluation protocol</b><p>Three difficulty levels, three generalization levels (3R), rule verifiers, rule questions and a no-rule control.</p></div>
+        <div><b>Scope and leaderboard</b><p>160 tasks over six rule types, and the success of six frontier agents.</p></div>
+      </div>
+      <h2 class="tldr__title">TL;DR</h2>
+      <div class="tldr">
+        <p>Frontier agents now operate both computers and robots. Can they learn a <b>new rule from context</b> — a demonstration video or a text instruction — and follow it?</p>
+        <p><b>ICLWorld</b> is an online benchmark of <b>160 tasks</b> across <span class="dig">computer use</span> and <span class="phy">robot use</span>, built on 30 self-built environments and 630 demonstration videos. Every task has <b>three rule versions</b> for the same goal and is tested at three levels — <b>Replay, Resample, Relocate</b> — through <b>UIverse</b>, one harness for both worlds.</p>
+        <p>The best agents follow in-context rules on screens but largely fail with a robot, and often identify the rule correctly yet fail to act on it.</p>
+      </div>
+      <details class="abstract">
+        <summary>Show abstract</summary>
+        <p>In-context learning (ICL) lets agents acquire new rules from context and adapt to user-specific requirements at inference time. The same frontier agents now operate both computers and robots, yet their ICL remains insufficiently assessed: existing benchmarks are largely offline, rely on text or static images, and risk training-data contamination, while robot evaluations are limited to method-level ablations. We present ICLWorld, an online benchmark that evaluates the ICL of agents from digital to physical worlds, covering computer use and robot use, together with UIverse, a unified harness that turns every environment into a user interface. We build 30 environments, record 630 demonstration videos (10+ hours), and design 160 tasks with customized, often counter-intuitive rules that cannot be satisfied without learning from the context. Each task comes with three rule versions, given as text or video, and we test generalization at three levels, from replaying the demonstration to new instances and unseen environments. Across six frontier models, the strongest agents, Claude Opus 5.5 and GPT-6 Astra, succeed on 82% and 76% of computer-use runs but only 27% and 26% of robot-use runs, and a no-rule control reduces success to at most 8%. GPT-6 Astra succeeds under all three rule versions on only 38% of computer-use tasks, half its rate under a single rule, and answers 98% of robot rule questions correctly yet completes only 20% of these tasks. Frontier agents learn rules comparably well from video and from text and transfer them across environments, whereas weaker agents rely on text and lose most of their video-based success once the demonstrated situation is resampled. These findings reveal substantial gaps between the digital and the physical world and between identifying a rule and acting on it.</p>
+      </details>
+      <div class="numbers">
+        <div><b>160</b><span>tasks</span></div>
+        <div><b>480</b><span>task–rule pairs</span></div>
+        <div><b>30</b><span>self-built environments</span></div>
+        <div><b>630</b><span>demonstration videos</span></div>
+        <div><b>3R</b><span>Replay · Resample · Relocate</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="design">
+    <div class="container">
+      <h2>Why ICLWorld</h2>
+      <p class="lede">Users teach agents their own conventions by showing or telling. ICLWorld tests whether agents pick up such a rule from context and apply it, end to end, on a computer and with a robot.</p>
+      <div class="why">
+        <div><h3>Interactive</h3><p>Existing ICL benchmarks are mostly offline, with text or static images. Here agents learn from videos and text, then act in live environments.</p></div>
+        <div><h3>Leakage-free</h3><p>All 30 environments, every rule and all 630 demonstrations are built and recorded by us.</p></div>
+        <div><h3>Context-dependent</h3><p>Three rule versions per task demand different behavior in the same situation. Without the rule, success drops to at most 8%.</p></div>
+        <div><h3>Digital to physical</h3><p>The same agents act on computers and robots through one harness, UIverse.</p></div>
+      </div>
+      <h3 class="subhead">How a task is built and scored</h3>
+      <p class="lede">Each of the 15 original environments has a counterpart with the same function but a different look. The rule comes as a human demonstration or as text, the test scene follows one of the 3R levels, and a verifier checks the final state against the rule.</p>
+      <figure class="figure figure--design">
+        <img src="media/figures/pipeline.webp" alt="Building and evaluating ICLWorld." width="2400" height="749" loading="lazy">
+      </figure>
+      <h3 class="subhead">UIverse: every world becomes a user interface</h3>
+      <p class="lede">The agent acts through the same kind of graphical interface in both worlds: on-screen inputs for apps, and an arm control panel for the robot.</p>
+      <div class="shots">
+        <figure class="shot"><img src="media/figures/uiverse-digital.webp" alt="UIverse, digital world: a self-built music app." loading="lazy" width="1440" height="820"><figcaption>UIverse · digital world</figcaption></figure>
+        <figure class="shot"><img src="media/figures/uiverse-physical.webp" alt="UIverse, physical world: cameras and arm controls." loading="lazy" width="940" height="955"><figcaption>UIverse · physical world</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="examples">
+    <div class="container">
+      <h2>One Goal, Three Rules, Three Rs</h2>
+      <div id="showcase"></div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="leaderboard">
+    <div class="container">
+      <h2>Leaderboard</h2>
+      <div class="lb-bar">
+        <div class="tabs" role="tablist" aria-label="Rule modality">
+          <button role="tab" aria-selected="true" data-mod="0">Text rule</button>
+          <button role="tab" aria-selected="false" data-mod="1">Video rule</button>
+        </div>
+        <div class="tabs" role="tablist" aria-label="Breakdown">
+          <button role="tab" aria-selected="true" data-view="main">Overall</button>
+          <button role="tab" aria-selected="false" data-view="cua">Computer use</button>
+          <button role="tab" aria-selected="false" data-view="rua">Robot use</button>
+          <button role="tab" aria-selected="false" data-view="gen">Generalization</button>
+        </div>
+      </div>
+      <div class="lb" id="lb"></div>
+    </div>
+  </section>
+
+  <section class="section" id="findings">
+    <div class="container">
+      <h2>Key Findings</h2>
+      <div class="findings" id="findings-list"></div>
+    </div>
+  </section>
+
+  <section class="section section--alt" id="bibtex">
+    <div class="container container--text">
+      <h2>Citation</h2>
+      <div class="bib">
+        <button class="bib__copy" id="bib-copy" type="button">Copy</button>
+        <pre><code id="bibtex-code">@article{liu2026iclworld,
+  title   = {ICLWorld: Benchmarking In-Context Learning of Agents
+             from Digital to Physical Worlds},
+  author  = {Liu, Qingle and Li, Jieming and Li, Pei-lin and Zheng, Shenghan and
+             Yang, Ruize and Fan, Sunqi and Hong, Deyao and Gao, Huan-ang and
+             Guo, Meng-Hao and Yang, Shuojin},
+  journal = {arXiv preprint},
+  year    = {2026}
+}</code></pre>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <img src="assets/brand/iclworld-wordmark.png" alt="ICLWorld" width="160" height="32">
+      <p><a href="https://github.com/ICLWorld/ICLWorld">Code</a> · <a href="https://huggingface.co/datasets/Aoraku/ICLWorld">Dataset</a> · <span class="muted-link">arXiv (coming soon)</span></p>
+      <p>Code released under the MIT license.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/data.js"></script>
+  <script src="assets/js/media.js"></script>
+  <script src="assets/js/hero.js"></script>
+  <script src="assets/js/showcase.js"></script>
+  <script src="assets/js/leaderboard.js"></script>
+  <script src="assets/js/findings.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
