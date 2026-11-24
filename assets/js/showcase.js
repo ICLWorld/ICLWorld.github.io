@@ -21,19 +21,27 @@
     if (text != null) n.textContent = text;
     return n;
   }
+  const lazy = new IntersectionObserver((entries) => entries.forEach((e) => {
+    const v = e.target;
+    if (e.isIntersecting) {
+      if (!v.getAttribute("src")) { v.src = v.dataset.src; v.load(); }
+      if (!v.controls) v.play().catch(() => {});
+    } else if (!v.paused && !v.controls) v.pause();
+  }), { rootMargin: "200px 0px", threshold: 0.01 });
   function video(src, opts = {}) {
     const v = document.createElement("video");
-    v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = !opts.still;
-    v.preload = "metadata";
+    v.muted = true; v.loop = true; v.playsInline = true; v.autoplay = false;
+    v.preload = "none";
     v.poster = src.replace(/\.mp4$/, ".jpg");
-    v.src = src;
+    v.dataset.src = src;
     if (opts.controls) v.controls = true;
+    lazy.observe(v);
     return v;
   }
 
   function syncGroup(videos, box) {
     videos.forEach((v) => {
-      v.loop = false; v.autoplay = false;
+      v.loop = false; v.autoplay = false; v.dataset.group = "1";
       v.addEventListener("ended", () => {
         if (videos.every((x) => x.ended)) videos.forEach((x) => { x.currentTime = 0; x.play().catch(() => {}); });
       });
