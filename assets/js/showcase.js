@@ -21,12 +21,13 @@
     if (text != null) n.textContent = text;
     return n;
   }
+  const ensure = (v) => { if (!v.getAttribute("src")) { v.src = v.dataset.src; v.load(); } };
   const lazy = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target;
     if (e.isIntersecting) {
-      if (!v.getAttribute("src")) { v.src = v.dataset.src; v.load(); }
-      if (!v.controls) v.play().catch(() => {});
-    } else if (!v.paused && !v.controls) v.pause();
+      ensure(v);
+      if (!v.controls && !v.dataset.group) v.play().catch(() => {});
+    } else if (!v.paused && !v.controls && !v.dataset.group) v.pause();
   }), { rootMargin: "200px 0px", threshold: 0.01 });
   function video(src, opts = {}) {
     const v = document.createElement("video");
@@ -49,7 +50,7 @@
     let visible = false;
     new IntersectionObserver(([e]) => {
       visible = e.isIntersecting;
-      videos.forEach((x) => (visible && !x.ended ? x.play().catch(() => {}) : x.pause()));
+      videos.forEach((x) => { if (visible) ensure(x); visible && !x.ended ? x.play().catch(() => {}) : x.pause(); });
     }, { threshold: 0.2 }).observe(box);
   }
 
